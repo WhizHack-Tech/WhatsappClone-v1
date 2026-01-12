@@ -1,0 +1,59 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: whatsapp-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: whatsappuser
+      MONGO_INITDB_ROOT_PASSWORD: whatsappPass123
+    volumes:
+      - ./persist_data:/data/db
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: whatsapp-backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://whatsappuser:whatsappPass123@mongo:27017/whatsapp-clone?authSource=admin
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: whatsapp-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  espionage-portal:
+    build: .
+    ports:
+      - "8001:80"
+    # volumes:
+      # Optional: Mount volumes for development (uncomment if needed)
+      # - ./Hamraaz:/var/www/html/hamraaz
+      # - ./SBI-Login:/var/www/html/sbi-login
+      # - ./Sparsh:/app/sparsh
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    container_name: espionage-portal
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

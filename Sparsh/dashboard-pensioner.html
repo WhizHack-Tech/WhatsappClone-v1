@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pensioner Dashboard - SPARSH Portal</title>
+    <link rel="icon" type="image/png" href="assets/sparsh-logo-favicon.png">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-left">
+                    <div class="logo">
+                        <img src="assets/sparsh-logo.png" alt="SPARSH Logo" class="emblem">
+                        <div class="logo-text">
+                            <h3>रक्षा लेखा प्रधान नियंत्रक (पेंशन)</h3>
+                            <h4>Principal Controller of Defence Accounts (Pension)</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-center">
+                    <div class="govt-info">
+                        <div class="icons">
+                            <img src="assets/swachBharatlogo.png" alt="Swachh Bharat Logo" class="swachh-bharat-logo">
+                            <img src="assets/mahatma.png" alt="150 Mahatma Logo" class="mahatma-image">
+                        </div>
+                        <div class="govt-text">
+                            <h4><img src="assets/emblem.png" alt="Government Emblem" class="emblem-icon">GOVERNMENT OF INDIA</h4>
+                            <h5>MINISTRY OF DEFENCE</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="user-menu">
+                        <div class="user-info">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Welcome, Pensioner</span>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-profile" onclick="showProfile()">
+                                <i class="fas fa-user"></i> Profile
+                            </button>
+                            <button class="btn-logout" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Navigation -->
+    <nav class="dashboard-nav">
+        <div class="container">
+            <ul class="dashboard-menu">
+                <li><a href="#overview" class="nav-link active" onclick="showSection('overview')">
+                    <i class="fas fa-tachometer-alt"></i> Overview
+                </a></li>
+                <li><a href="#pension-details" class="nav-link" onclick="showSection('pension-details')">
+                    <i class="fas fa-money-bill-wave"></i> Pension Details
+                </a></li>
+                <li><a href="#documents" class="nav-link" onclick="showSection('documents')">
+                    <i class="fas fa-file-alt"></i> My Documents
+                </a></li>
+                <li><a href="#services" class="nav-link" onclick="showSection('services')">
+                    <i class="fas fa-cogs"></i> Services
+                </a></li>
+                <li><a href="#notifications" class="nav-link" onclick="showSection('notifications')">
+                    <i class="fas fa-bell"></i> Notifications
+                </a></li>
+                <li><a href="#support" class="nav-link" onclick="showSection('support')">
+                    <i class="fas fa-headset"></i> Support
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <main class="dashboard-content">
+        <div class="container">
+            <!-- Overview Section -->
+            <section id="overview" class="dashboard-section active">
+                <div class="section-header">
+                    <h1>Dashboard Overview</h1>
+                    <p>Welcome to your SPARSH Pension Portal Dashboard</p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>₹45,000</h3>
+                            <p>Monthly Pension</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>15th</h3>
+                            <p>Next Payment Date</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>12</h3>
+                            <p>Documents Available</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>3</h3>
+                            <p>New Notifications</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-list">
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-check-circle text-success"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <h4>Pension Credited</h4>
+                                        <p>₹45,000 credited to your account on 15th Dec 2024</p>
+                                        <span class="activity-time">2 hours ago</span>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-file-upload text-info"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <h4>Document Updated</h4>
+                                        <p>Life Certificate uploaded successfully</p>
+                                        <span class="activity-time">1 day ago</span>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-info-circle text-warning"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <h4>DA Revision</h4>
+                                        <p>Dearness Allowance revised to 46%</p>
+                                        <span class="activity-time">3 days ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Quick Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-actions">
+                                <button class="action-btn" onclick="downloadPensionSlip()">
+                                    <i class="fas fa-download"></i>
+                                    Download Pension Slip
+                                </button>
+                                <button class="action-btn" onclick="uploadLifeCertificate()">
+                                    <i class="fas fa-upload"></i>
+                                    Upload Life Certificate
+                                </button>
+                                <button class="action-btn" onclick="updateProfile()">
+                                    <i class="fas fa-user-edit"></i>
+                                    Update Profile
+                                </button>
+                                <button class="action-btn" onclick="raiseGrievance()">
+                                    <i class="fas fa-comment-alt"></i>
+                                    Raise Grievance
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pension Details Section -->
+            <section id="pension-details" class="dashboard-section">
+                <div class="section-header">
+                    <h1>Pension Details</h1>
+                    <p>Your complete pension information and payment history</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Pension Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Pensioner ID</label>
+                                    <span>PEN123456789</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>PPO Number</label>
+                                    <span>PPO/2020/123456</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Basic Pension</label>
+                                    <span>₹30,000</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Dearness Allowance</label>
+                                    <span>₹13,800 (46%)</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Total Pension</label>
+                                    <span>₹43,800</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Bank Account</label>
+                                    <span>HDFC Bank - XXXX1234</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Payment History</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="payment-history">
+                                <div class="payment-item">
+                                    <div class="payment-date">Dec 15, 2024</div>
+                                    <div class="payment-amount">₹43,800</div>
+                                    <div class="payment-status success">Credited</div>
+                                </div>
+                                <div class="payment-item">
+                                    <div class="payment-date">Nov 15, 2024</div>
+                                    <div class="payment-amount">₹43,800</div>
+                                    <div class="payment-status success">Credited</div>
+                                </div>
+                                <div class="payment-item">
+                                    <div class="payment-date">Oct 15, 2024</div>
+                                    <div class="payment-amount">₹43,800</div>
+                                    <div class="payment-status success">Credited</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Documents Section -->
+            <section id="documents" class="dashboard-section">
+                <div class="section-header">
+                    <h1>My Documents</h1>
+                    <p>Access and download your pension-related documents</p>
+                </div>
+
+                <div class="documents-grid">
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>Pension Payment Order</h3>
+                            <p>PPO/2020/123456</p>
+                            <span class="document-date">Updated: Dec 15, 2024</span>
+                        </div>
+                        <div class="document-actions">
+                            <button class="btn-download" onclick="downloadDocument('ppo')">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>Life Certificate</h3>
+                            <p>Annual verification document</p>
+                            <span class="document-date">Updated: Dec 10, 2024</span>
+                        </div>
+                        <div class="document-actions">
+                            <button class="btn-download" onclick="downloadDocument('life-cert')">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>Pension Slip</h3>
+                            <p>Monthly pension statement</p>
+                            <span class="document-date">Updated: Dec 15, 2024</span>
+                        </div>
+                        <div class="document-actions">
+                            <button class="btn-download" onclick="downloadDocument('pension-slip')">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>Service Book</h3>
+                            <p>Complete service record</p>
+                            <span class="document-date">Updated: Nov 20, 2024</span>
+                        </div>
+                        <div class="document-actions">
+                            <button class="btn-download" onclick="downloadDocument('service-book')">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="services" class="dashboard-section">
+                <div class="section-header">
+                    <h1>Services</h1>
+                    <p>Access various pension-related services</p>
+                </div>
+
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-upload"></i>
+                        </div>
+                        <h3>Upload Life Certificate</h3>
+                        <p>Submit your annual life certificate for pension continuation</p>
+                        <button class="btn-service" onclick="uploadLifeCertificate()">
+                            Upload Now
+                        </button>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <h3>Update Profile</h3>
+                        <p>Update your personal information and contact details</p>
+                        <button class="btn-service" onclick="updateProfile()">
+                            Update Now
+                        </button>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3>Bank Details</h3>
+                        <p>Update or modify your bank account information</p>
+                        <button class="btn-service" onclick="updateBankDetails()">
+                            Update Now
+                        </button>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-comment-alt"></i>
+                        </div>
+                        <h3>Raise Grievance</h3>
+                        <p>Report issues or seek assistance for pension matters</p>
+                        <button class="btn-service" onclick="raiseGrievance()">
+                            Raise Now
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notifications Section -->
+            <section id="notifications" class="dashboard-section">
+                <div class="section-header">
+                    <h1>Notifications</h1>
+                    <p>Stay updated with important announcements and alerts</p>
+                </div>
+
+                <div class="notifications-list">
+                    <div class="notification-item unread">
+                        <div class="notification-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="notification-content">
+                            <h4>Pension Credited Successfully</h4>
+                            <p>Your pension amount of ₹43,800 has been credited to your account.</p>
+                            <span class="notification-time">2 hours ago</span>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn-mark-read" onclick="markAsRead(1)">Mark Read</button>
+                        </div>
+                    </div>
+
+                    <div class="notification-item unread">
+                        <div class="notification-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="notification-content">
+                            <h4>DA Revision Notification</h4>
+                            <p>Dearness Allowance has been revised to 46% effective from July 2024.</p>
+                            <span class="notification-time">1 day ago</span>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn-mark-read" onclick="markAsRead(2)">Mark Read</button>
+                        </div>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="notification-content">
+                            <h4>Document Update Required</h4>
+                            <p>Please upload your life certificate before December 31, 2024.</p>
+                            <span class="notification-time">3 days ago</span>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn-action" onclick="uploadLifeCertificate()">Upload Now</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Support Section -->
+            <section id="support" class="dashboard-section">
+                <div class="section-header">
+                    <h1>Support & Help</h1>
+                    <p>Get assistance and support for your pension-related queries</p>
+                </div>
+
+                <div class="support-grid">
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>Helpline</h3>
+                        <p>Call our 24/7 helpline for immediate assistance</p>
+                        <div class="support-contact">
+                            <strong>Toll Free:</strong> 1800-XXX-XXXX<br>
+                            <strong>Email:</strong> support@sparsh.gov.in
+                        </div>
+                        <button class="btn-support" onclick="callHelpline()">
+                            Call Now
+                        </button>
+                    </div>
+
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Live Chat</h3>
+                        <p>Chat with our support team for real-time assistance</p>
+                        <button class="btn-support" onclick="startLiveChat()">
+                            Start Chat
+                        </button>
+                    </div>
+
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h3>FAQs</h3>
+                        <p>Find answers to commonly asked questions</p>
+                        <button class="btn-support" onclick="showFAQs()">
+                            View FAQs
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html> 

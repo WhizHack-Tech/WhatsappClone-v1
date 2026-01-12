@@ -1,0 +1,331 @@
+/* WhatsApp Dark Theme Auth Styles */
+:root {
+  --whatsapp-dark-bg: #1f2c34;
+  --whatsapp-darker-bg: #0b141a;
+  --whatsapp-green: #00a884;
+  --whatsapp-green-hover: #008f72;
+  --text-primary: #e9edef;
+  --text-secondary: #8696a0;
+  --text-tertiary: #667781;
+  --border-color: #2a3942;
+  --hover-bg: #374045;
+  --selected-bg: #2a3942;
+  --search-bg: #202c33;
+  --input-bg: #2a3942;
+  --card-bg: #202c33;
+}
+
+.auth-container {
+  min-height: 100vh;
+  background-color: var(--whatsapp-dark-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text-primary);
+}
+
+.auth-content {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header */
+.auth-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.whatsapp-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--whatsapp-green);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.whatsapp-logo svg {
+  color: var(--whatsapp-green);
+}
+
+/* Download Section */
+.download-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.download-icon {
+  color: var(--whatsapp-green);
+  flex-shrink: 0;
+}
+
+.download-text {
+  flex: 1;
+}
+
+.download-text h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.download-text p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.download-btn {
+  background: var(--whatsapp-green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.download-btn:hover {
+  background: var(--whatsapp-green-hover);
+}
+
+/* Login Form Container */
+.login-form-container {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.login-form-container h2 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.form-subtitle {
+  margin: 0 0 24px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 16px;
+}
+
+/* Country Selection */
+.country-select {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--input-bg);
+  cursor: pointer;
+  transition: border-color 0.2s;
+  color: var(--text-primary);
+}
+
+.country-select:hover {
+  border-color: var(--whatsapp-green);
+  background: var(--hover-bg);
+}
+
+.country-flag {
+  font-size: 20px;
+}
+
+.country-name {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.country-select svg {
+  color: var(--text-secondary);
+}
+
+/* Phone Input */
+.phone-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--input-bg);
+  overflow: hidden;
+}
+
+.country-code {
+  padding: 12px 16px;
+  background: var(--search-bg);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  border-right: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.phone-number-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--input-bg);
+}
+
+.phone-number-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.phone-input:focus-within {
+  border-color: var(--whatsapp-green);
+}
+
+/* Next Button */
+.next-btn {
+  width: 100%;
+  background: var(--whatsapp-green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 8px;
+}
+
+.next-btn:hover:not(:disabled) {
+  background: var(--whatsapp-green-hover);
+}
+
+.next-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* QR Login Link */
+.qr-login-link {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.qr-login-link a {
+  color: var(--whatsapp-green);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.qr-login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Auth Footer */
+.auth-footer {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.auth-footer p {
+  margin: 8px 0;
+}
+
+.get-started-link {
+  color: var(--whatsapp-green);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.get-started-link:hover {
+  text-decoration: underline;
+}
+
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.security-note svg {
+  color: var(--text-secondary);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-spinner.small {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 16px;
+  }
+  
+  .auth-content {
+    max-width: 100%;
+  }
+  
+  .download-section {
+    padding: 12px;
+  }
+  
+  .login-form-container {
+    padding: 20px;
+  }
+  
+  .download-text h3 {
+    font-size: 14px;
+  }
+  
+  .download-text p {
+    font-size: 12px;
+  }
+} 

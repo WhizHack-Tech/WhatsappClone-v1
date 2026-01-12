@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPARSH</title>
+    <link rel="icon" type="image/png" href="assets/sparsh-logo-favicon.png">
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-left">
+                    <div class="logo">
+                        <img src="assets/sparsh-logo.png" alt="SPARSH Logo" class="emblem">
+                        <div class="logo-text">
+                            <h3>रक्षा लेखा प्रधान नियंत्रक (पेंशन)</h3>
+                            <h4>Principal Controller of Defence Accounts (Pension)</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-center">
+                    <div class="govt-info">
+                        <div class="icons">
+                            <img src="assets/swachBharatlogo.png" alt="Swachh Bharat Logo" class="swachh-bharat-logo">
+                            <img src="assets/mahatma.png" alt="150 Mahatma Logo" class="mahatma-image">
+                        </div>
+                        <div class="govt-text">
+                            <h4><img src="assets/emblem.png" alt="Government Emblem" class="emblem-icon">GOVERNMENT OF INDIA</h4>
+                            <h5>MINISTRY OF DEFENCE</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="accessibility">
+                    </div>
+                    <div class="login-buttons">
+                        <img src="assets/digital-seva.png" alt="Digital Seva" class="digital-seva-image">
+                        <button class="btn-login" onclick="openLoginModal()">
+                            <i class="fas fa-lock"></i> Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Scrolling News Banner -->
+    <div class="news-banner">
+        <marquee class="m-2" width="100%" direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+            <b><a href="#" onclick="javascript:showAllMarquee();">View All</a></b>&nbsp;<b> *IMPORTANT* </b> :&nbsp; <b> Phase out of existing L0 fingerprint devices.</b><a href="assets/pension/prelogin/pdf/UIDAI_letter_No_1302112021-AUTH-I.pdf" target="_blank"> Click Here </a><b>&nbsp; <b> Income &amp; TDS details for FY 2024-25.</b><a href="assets/pension/prelogin/pdf/Income_Tax_2024-25.pdf" target="_blank"> Click Here </a><b> &nbsp; LTA is now productionized &amp; User Guide of LTA Claims on SPARSH. </b><a href="assets/pension/prelogin/pdf/LTA FLOW PPT.pdf" target="_blank"> Click Here </a> </b> <b>i. Instructions for Nepal Domiciled Gorkha pensioners to receive payment in bank account of Nepal<a style="color: blue;" onclick="javascript:viewInstNDG();">&nbsp;Click here</a> </b>&nbsp; <b>ii. Instructions to utilize SPARSH services by Non Resident Indian and Nepal Domiciled Gorkha pensioners.<a style="color: blue;" onclick="javascript:viewInst_NRI_NDG();">&nbsp;Click here</a> </b>&nbsp;<b> Form 16 (Certificate of Tax deducted at Source) for Financial Year 2023-24 is now available. Pensioners can login to SPARSH Portal and obtain the same from the "My Documents" Section.</b> &nbsp;&nbsp;<b>Say no to corruption; Commit to the nation. </b> &nbsp;&nbsp; <b> a.&nbsp;Different modes of identification- <a href="https://youtu.be/llZJH11mGSs" target="_blank"> https://youtu.be/llZJH11mGSs</a> &nbsp; b. How to perform identification through MLC-&nbsp;<a href="https://youtu.be/FWsqaaxLwBI" target="_blank">https://youtu.be/FWsqaaxLwBI</a> &nbsp; c. How to perform identification through Jeevan Pramaan- <a href="https://youtu.be/ILKxSPFD_LQ" target="_blank">https://youtu.be/ILKxSPFD_LQ</a> </b> <b> &nbsp; d. Aadhar Update - upload Aadhar copy for approval if demographic validation fails</b> <b> &nbsp; e. To Know Identification Status </b><a style="color: blue;" onclick="javascript:trackPpoStatus();">Click here</a> <b> &nbsp; f. Attention: SPARSH Pensioners (getting pension in SBI A/c) </b><a href="https://pcdapension.nic.in/pcda/Sparsh/sparsh_sbi_pen.pdf" target="_blank"> Click Here </a> <b> &nbsp; g. To Update Mobile No. </b><a style="color: blue;" onclick="javascript:updateMobile();">Click here</a> <b> &nbsp; h. To Update Aadhar No. </b><a style="color: blue;" onclick="javascript:loadpreloginAadharSeedingUtility();">Click here</a> <b> &nbsp; i. For updated identification guidelines </b><a style="color: blue;" onclick="javascript:showFAQPensionerIdentification();">Click here</a> <b> &nbsp; j. Please ensure that the PINCODE you add is same as that of your AADHAR Card so that it can be validated.</b> <b>&nbsp; k. Important Notice for For Defence Pensioners on SPARSH </b><a style="color: blue;" onclick="javascript:importantNoticeForIdentification();">Click here</a>  &nbsp; <b>l. Kind Attention - Pensioners are requested to update their PAN. To Check Status<a style="color: blue;" onclick="javascript:loadPreloginIdentification();">&nbsp;Click here</a> </b> <b>m.&nbsp; State-of-the-art-infrastructure-for-SPARSH &amp; PCDAP(Prayagraj) </b><a href="assets/pension/prelogin/pdf/State_of_the_Art_infrastructure_for_SPARSH.pdf" target="_blank"> Click Here </a> <b> n.&nbsp; Meeting with NHQ  <a href="assets/pension/prelogin/pdf/MEETING_WITH_NHQ_ENGLISH.pdf" target="_blank">Click Here (Eng) </a> / <a href="assets/pension/prelogin/pdf/MEETING_WITH_NHQ_HINDI.pdf" target="_blank"> Click Here(Hindi) </a> </b> <b>o.&nbsp; Meeting between PCDA (P) &amp; ADG (P&amp;P) Army HQrs  <a href="assets/pension/prelogin/pdf/ADG_MP_VISIT.pdf" target="_blank"> Click Here </a> </b>
+        </marquee>
+    </div>
+
+    <!-- Blinking Notice Bar -->
+    <div class="blink">
+        <b>Beware of Fake Messages:</b> &nbsp; <a href="assets/pension/prelogin/pdf/FAKE_MESSAGE_ENGLISH.pdf" target="_blank">Click here(Eng)</a>/ <a href="assets/pension/prelogin/pdf/FAKE_MESSAGE_HINDI.pdf" target="_blank">Click here(Hindi)</a>&nbsp;<b>Important Notice for Sparsh Pensioners </b>&nbsp;<a href="assets/pension/prelogin/pdf/SPARSH_Notice_Jan_2025_Eng.pdf" target="_blank">Click here(Eng)</a>/&nbsp;<a href="assets/pension/prelogin/pdf/SPARSH_Notice_Jan_2025_Hindi.pdf" target="_blank">Click here(Hindi)</a>&nbsp;<b>To Update Mobile No. </b><a style="color: blue;" onclick="javascript:updateMobile();">Click here</a> &nbsp; 2. <b>To Update Aadhar No. </b><a style="color: blue;" onclick="javascript:loadpreloginAadharSeedingUtility();">Click here</a>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="about.html" class="nav-link">About SPARSH</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="orders.html" class="nav-link">Orders & Information</a></li>
+                <li><a href="contact.html" class="nav-link">Contact & Support</a></li>
+                <li><a href="locator.html" class="nav-link">Service Center Locator</a></li>
+                <li><a href="csc-locator.html" class="nav-link">CSC Locator</a></li>
+                <li><a href="quick-links.html" class="nav-link">Quick Links</a></li>
+                <li><a href="faqs.html" class="nav-link">FAQs</a></li>
+                <li><a href="help.html" class="nav-link">Help</a></li>
+                <li><a href="update-mobile.html" class="nav-link">Update Mobile</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1>Right Pension at the Right Time</h1>
+                        <p class="hero-subtitle">Digitized Pension processing System</p>
+                        <p class="hero-description">Centralized Disbursement of pension to pensioners</p>
+                        <button class="btn-continue" onclick="openLoginModal()">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Statistics -->
+    <footer class="footer-stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">50</div>
+                    <div class="stat-label">ORGANISATIONS</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2,303</div>
+                    <div class="stat-label">OFFICES</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">31,46,691</div>
+                    <div class="stat-label">PENSIONERS</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">14</div>
+                    <div class="stat-label">(DAYS) AVG SANCTION</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">(DAYS) LEAST SANCTION</div>
+                </div>
+                <div class="stat-item sparsh-logo">
+                    <div class="stat-number">SPARSH</div>
+                    <div class="stat-label">System for Pension Administration - RAKSHA</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeLoginModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-content">
+                <!-- Left Section - Logo and Info -->
+                <div class="modal-left">
+                    <div class="modal-header-title">
+                        <h2>USER LOGIN</h2>
+                        <div class="underline"></div>
+                    </div>
+                    <div class="login-logo-section">
+                        <img src="assets/sparsh-logo.png" alt="SPARSH Logo" class="modal-logo">
+                        <div class="logo-info">
+                            <h4>रक्षा लेखा प्रधान नियंत्रक (पेंशन)</h4>
+                            <p>Principal Controller of Defence Accounts</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Section - Login Form -->
+                <div class="modal-right">
+                    <div class="login-instruction">
+                        "Please login using the credentials sent to your registered mobile number"
+                    </div>
+                    <form class="modal-login-form" onsubmit="handleModalLogin(event)">
+                        <div class="form-group">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" placeholder="USER NAME" required>
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" placeholder="**********" required>
+                            <i class="fas fa-eye toggle-password-modal" onclick="toggleModalPassword()"></i>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="showPassword">
+                            <label for="showPassword">Show Password</label>
+                        </div>
+                        <div class="captcha-group">
+                            <div class="captcha-display">XWZR72<i class="fas fa-sync-alt"></i></div>
+                            <p class="captcha-instruction">Type the code shown</p>
+                            <input type="text" placeholder="Please enter above code" required>
+                        </div>
+                        <button type="submit" class="btn-modal-login">LOGIN</button>
+                        <div class="modal-links">
+                            <a href="#" onclick="alert('Forgot Password functionality')">Forgot Password?</a>
+                            <a href="#" onclick="alert('Unlock Account functionality')">Unlock Account?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 

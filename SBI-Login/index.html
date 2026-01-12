@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Bank of India - Personal Banking</title>
+    <link rel="stylesheet" href="styles.css?v=1.0.3">
+    <link rel="icon" type="image/png" href="pictures/logo.png">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="pictures/sbi-logo.png" alt="SBI Logo" class="logo">
+                </div>
+                <div class="bank-info">
+                    <div class="header-nav">
+                        <button class="home-loan-btn">
+                            <span class="home-icon">🏠</span>
+                            SBI Home Loan
+                        </button>
+                        <a href="#" class="header-link">About OnlineSBI</a>
+                        <a href="#" class="header-link">Forms</a>
+                        <a href="#" class="header-link">Net Banking Branches</a>
+                        <div class="language-dropdown">
+                            <button class="language-btn">Language <span class="dropdown-arrow">▼</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Products & Services</a></li>
+                <li><a href="#">How Do I Help?</a></li>
+                <li><a href="#">Manage Debit Card E-Mandate</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Info Banner -->
+    <div class="info-banner">
+        <div class="container">
+            <div class="banner-content">
+                <div class="banner-left">
+                    <span class="login-text">Login to OnlineSBI</span>
+                </div>
+                <div class="banner-center">
+                    <span class="security-message">Dear Customer, Mandatory login and profile password change introduced for added security.</span>
+                </div>
+                <div class="banner-right">
+                    <span class="welcome-text">Welcome to Personal Internet Banking</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="content-grid">
+                <!-- Login Section -->
+                <section class="login-section">
+                    <div class="login-warning">
+                        <span class="care-text">(CARE: Username and password are case sensitive.)</span>
+                    </div>
+
+                    <form class="login-form" id="loginForm">
+                        <div class="form-row">
+                            <div class="form-group username-group">
+                                <label for="username">Username*</label>
+                                <input type="text" id="username" name="username" required>
+                            </div>
+                            <div class="form-links">
+                                <a href="#" class="help-link">New User ? Register here/Activate</a><br>
+                                <a href="#" class="help-link">Forgot Username / Login Password</a>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group password-group">
+                                <label for="password">Password*</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+                            <div class="virtual-keyboard-option">
+                                <input type="checkbox" id="enableVirtualKeyboard">
+                                <label for="enableVirtualKeyboard">Enable Virtual Keyboard</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row captcha-row">
+                            <div class="form-group captcha-group">
+                                <label>Enter the text as shown in the image*</label>
+                                <div class="captcha-container">
+                                    <div class="captcha-display" id="captchaDisplay">
+                                        <span id="captchaText">c3x4p</span>
+                                    </div>
+                                    <button type="button" class="refresh-captcha" id="refreshCaptcha" title="Refresh">🔄</button>
+                                </div>
+                                <input type="text" id="captcha" name="captcha" required>
+                            </div>
+                            <div class="captcha-spacer"></div>
+                        </div>
+
+                        <div class="form-group security-options">
+                            <label>Select one of the Captcha options *</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="captchaType" value="image" checked>
+                                    <span class="radio-dot green"></span>
+                                    Image Captcha
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="captchaType" value="audio">
+                                    <span class="radio-dot"></span>
+                                    Audio Captcha
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-login">Login</button>
+                            <button type="reset" class="btn btn-reset">Reset</button>
+                        </div>
+
+                        <div class="security-info">
+                            <p>For better security use the Online Virtual Keyboard to login. <a href="#" id="virtualKeyboardLink">More ...</a></p>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Promotional Section -->
+                <section class="promo-section">
+                    <div class="vigilant-image-container">
+                        <img src="pictures/vigilant.png" alt="BE VIGILANT. BE SAFE." class="vigilant-image">
+                    </div>
+
+                    <!-- Customer Information Panel -->
+                    <div class="customer-info-panel">
+                        <div class="customer-info-header">
+                            <h4>Dear Customer,</h4>
+                        </div>
+                        <div class="customer-info-content">
+                            <ul>
+                                <li>OTP based login & Mandatory login password change after 180 days introduced for added security.</li>
+                                <li>Please do not share OTP/password/user information with anyone. Bank never asks for such information.</li>
+                                <li>For better control & security of your account, you can Lock or Unlock your INB access through link "Lock & Unlock User" available at bottom of this Page.</li>
+                                <li>Mandatory Profile password change after 365 days introduced for added security.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Three Column Info Section -->
+            <div class="footer-info-section">
+                <div class="info-column">
+                    <div class="info-icon">ℹ️</div>
+                    <div class="info-content">
+                        <p><strong>NEVER</strong> respond to any popup,email, SMS or phone call, no matter how appealing or official looking, seeking your personal information such as username, password(s), mobile number, ATM Card details, etc.</p>
+                        <p>Such communications are sent or created by fraudsters to trick you into parting with your credentials.</p>
+                    </div>
+                </div>
+                
+                <div class="info-column links-column">
+                    <div class="info-icon">🔗</div>
+                    <div class="info-content">
+                        <div class="footer-links">
+                            <div class="link-group">
+                                <a href="#" class="footer-link">Complaints</a>
+                                <a href="#" class="footer-link">Trouble logging in</a>
+                                <a href="#" class="footer-link">Password Management</a>
+                                <a href="#" class="footer-link">Security Tips</a>
+                                <a href="#" class="footer-link">FAQ</a>
+                            </div>
+                            <div class="link-group">
+                                <a href="#" class="footer-link">About Phishing</a>
+                                <a href="#" class="footer-link">Report Phishing</a>
+                                <a href="#" class="footer-link text-red">Lock & Unlock User</a>
+                                <a href="#" class="footer-link">Block ATM Card</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-column">
+                    <div class="info-icon">✓</div>
+                    <div class="info-content">
+                        <p>This site is certified by VeriSign as a secure and trusted site. All information sent or received in this site is encrypted using 256-bit encryption</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Info Section -->
+            <div class="additional-info">
+                <ul>
+                    <li>Mandatory fields are marked with an asterisk (*)</li>
+                    <li>Do not provide your username and password anywhere other than in this page</li>
+                    <li>Your username and password are highly confidential. Never part with them.<strong>SBI</strong> will never ask for this information.</li>
+                </ul>
+            </div>
+            
+            <!-- Bottom Footer -->
+            <div class="bottom-footer">
+                <div class="footer-brand">
+                    <img src="pictures/verisign.svg" alt="VeriSign" class="verisign-logo">
+                </div>
+                <div class="footer-text">
+                    <p>Site best viewed at 1024 x 768 resolution in Microsoft Edge 79 +, Mozilla 96 +, Google Chrome 97 +</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Virtual Keyboard Modal -->
+    <div id="virtualKeyboard" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Virtual Keyboard</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="keyboard">
+                <div class="keyboard-row">
+                    <button class="key">1</button>
+                    <button class="key">2</button>
+                    <button class="key">3</button>
+                    <button class="key">4</button>
+                    <button class="key">5</button>
+                    <button class="key">6</button>
+                    <button class="key">7</button>
+                    <button class="key">8</button>
+                    <button class="key">9</button>
+                    <button class="key">0</button>
+                </div>
+                <div class="keyboard-row">
+                    <button class="key">Q</button>
+                    <button class="key">W</button>
+                    <button class="key">E</button>
+                    <button class="key">R</button>
+                    <button class="key">T</button>
+                    <button class="key">Y</button>
+                    <button class="key">U</button>
+                    <button class="key">I</button>
+                    <button class="key">O</button>
+                    <button class="key">P</button>
+                </div>
+                <div class="keyboard-row">
+                    <button class="key">A</button>
+                    <button class="key">S</button>
+                    <button class="key">D</button>
+                    <button class="key">F</button>
+                    <button class="key">G</button>
+                    <button class="key">H</button>
+                    <button class="key">J</button>
+                    <button class="key">K</button>
+                    <button class="key">L</button>
+                </div>
+                <div class="keyboard-row">
+                    <button class="key">Z</button>
+                    <button class="key">X</button>
+                    <button class="key">C</button>
+                    <button class="key">V</button>
+                    <button class="key">B</button>
+                    <button class="key">N</button>
+                    <button class="key">M</button>
+                    <button class="key special">Space</button>
+                    <button class="key special">⌫</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=1.0.3"></script>
+</body>
+</html>

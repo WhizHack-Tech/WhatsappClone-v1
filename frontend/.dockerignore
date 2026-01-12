@@ -1,0 +1,11 @@
+# frontend/.dockerignore
+node_modules
+npm-debug.log
+.env
+build
+.idea
+.vscode
+README.md
+# Ensure package files are included
+!package.json
+!package-lock.json 

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay Calculator - Hamraaz</title>
+
+    <link rel="icon" type="image/png" href="pictures/hamraaz-logo.png">
+    <link rel="shortcut icon" type="image/png" href="pictures/hamraaz-logo.png">
+    <link rel="stylesheet" href="/hamraaz/styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <span class="logo-text">Hamraaz</span>
+                    <img src="/hamraaz/pictures/hamraaz-logo.png" alt="Hamraaz Logo">
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/hamraaz/index.html" class="nav-link">Home</a></li>
+                    <li><a href="/hamraaz/ro-login.html" class="nav-link">RO Login</a></li>
+                    <li><a href="/hamraaz/unit-login.html" class="nav-link">Unit Login</a></li>
+                    <li><a href="/hamraaz/personal-login.html" class="nav-link">Personal Login</a></li>
+                    <li><a href="/hamraaz/signup.html" class="nav-link">Signup</a></li>
+                    <li><a href="/hamraaz/forgot-password.html" class="nav-link">Forgot Password</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pay-calc-container">
+        <div class="pay-calc-content">
+            <h1 class="pay-calc-title">Pay Calculator for Fixation of Pay on Promotion/MACP</h1>
+            
+            <div class="pay-calc-form-wrapper">
+                <h2 class="form-section-title">Input Parameters</h2>
+                
+                <form class="pay-calc-form" id="payCalculatorForm">
+                    <div class="form-row">
+                        <label for="payLevel" class="form-label">Pay Level before Promotion/MACP :</label>
+                        <select class="form-select" id="payLevel" required>
+                            <option value="">---Select---</option>
+                            <option value="1">Level 1</option>
+                            <option value="2">Level 2</option>
+                            <option value="3">Level 3</option>
+                            <option value="4">Level 4</option>
+                            <option value="5">Level 5</option>
+                            <option value="6">Level 6</option>
+                            <option value="7">Level 7</option>
+                            <option value="8">Level 8</option>
+                            <option value="9">Level 9</option>
+                            <option value="10">Level 10</option>
+                            <option value="11">Level 11</option>
+                            <option value="12">Level 12</option>
+                            <option value="13">Level 13</option>
+                            <option value="14">Level 14</option>
+                            <option value="15">Level 15</option>
+                            <option value="16">Level 16</option>
+                            <option value="17">Level 17</option>
+                            <option value="18">Level 18</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="basicPay" class="form-label">Basic Pay before Promotion/MACP :</label>
+                        <select class="form-select" id="basicPay" required>
+                            <option value="">---Select---</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="promotionDate" class="form-label">Date of Promotion/MACP :</label>
+                        <div class="date-input-group">
+                            <input type="text" class="form-input date-input" id="promotionDate" placeholder="DD/MM/YYYY" required>
+                            <button type="button" class="date-select-btn" id="selectDateBtn">Select Date</button>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="nextIncrement" class="form-label">Existing Date of Next Increment (DNI) :</label>
+                        <select class="form-select" id="nextIncrement" required>
+                            <option value="">---Select---</option>
+                            <option value="01-01">01 January</option>
+                            <option value="01-07">01 July</option>
+                        </select>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="calc-btn submit-calc-btn">Submit</button>
+                        <button type="reset" class="calc-btn reset-calc-btn">Reset</button>
+                        <button type="button" class="calc-btn matrix-calc-btn">Pay Matrix</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-logos">
+            <img src="/hamraaz/pictures/gov-india-logo.png" alt="Government of India" class="gov-logo">
+            
+            <img src="/hamraaz/pictures/azadi-ka-amrit-mahotsav.png" alt="Azadi Ka Amrit Mahotsav" class="azadi-logo">
+            
+            <img src="/hamraaz/pictures/digital-india-logo.png" alt="Digital India - Power to Empower" class="digital-india-logo">
+            
+            <img src="/hamraaz/pictures/gov-india-logo.png" alt="Government of India" class="gov-logo">
+        </div>
+    </footer>
+
+    <script src="/hamraaz/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+/* WhatsApp Message Styles */
+.message-container {
+  display: flex;
+  margin: 4px 0;
+  max-width: 65%;
+}
+
+.message-container.own {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+
+.message-container.other {
+  margin-right: auto;
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  position: relative;
+  padding: 8px 12px;
+  border-radius: 8px;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+.message-bubble.own {
+  background-color: #005c4b;
+  color: #e9edef;
+  border-bottom-right-radius: 2px;
+}
+
+.message-bubble.other {
+  background-color: #202c33;
+  color: #e9edef;
+  border-bottom-left-radius: 2px;
+}
+
+.message-content {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  white-space: pre-wrap;
+}
+
+.message-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 11px;
+  color: #8696a0;
+  margin-top: 2px;
+}
+
+.message-time {
+  font-size: 11px;
+  color: #8696a0;
+  opacity: 0.8;
+}
+
+.message-status {
+  display: flex;
+  align-items: center;
+  color: #53bdeb;
+}
+
+.message-status svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Message Status Colors */
+.message-status.read svg {
+  color: #53bdeb;
+}
+
+.message-status.delivered svg {
+  color: #8696a0;
+}
+
+.message-status.sent svg {
+  color: #8696a0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .message-container {
+    max-width: 75%;
+  }
+  
+  .message-bubble {
+    padding: 6px 10px;
+  }
+  
+  .message-content {
+    font-size: 13px;
+  }
+  
+  .message-time {
+    font-size: 10px;
+  }
+  
+  .message-status svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .message-container {
+    max-width: 85%;
+  }
+  
+  .message-bubble {
+    padding: 5px 8px;
+  }
+  
+  .message-content {
+    font-size: 12px;
+  }
+  
+  .message-time {
+    font-size: 9px;
+  }
+  
+  .message-status svg {
+    width: 12px;
+    height: 12px;
+  }
+} 
