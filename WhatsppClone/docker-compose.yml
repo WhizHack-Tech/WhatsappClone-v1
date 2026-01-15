@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:4.4
+    container_name: whatsapp-clone-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: whatsapp-clone
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./backend/scripts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - whatsapp-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: whatsapp-clone-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/whatsapp-clone?authSource=admin
+      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
+      OPENAI_API_KEY: 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
+      CLIENT_URL: http://10.0.4.32:3000
+      CORS_ORIGIN: http://10.0.4.32:3000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    networks:
+      - whatsapp-network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  # Frontend React App (served with Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: whatsapp-clone-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - whatsapp-network
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  whatsapp-network:
+    driver: bridge 

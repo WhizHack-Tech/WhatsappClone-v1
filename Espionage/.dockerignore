@@ -1,0 +1,31 @@
+# Ignore git and development files
+.git
+.gitignore
+README.md
+
+# Ignore zip files
+*.zip
+
+# Ignore node_modules (will be installed in container)
+**/node_modules
+**/npm-debug.log
+
+# Ignore local development files
+.env
+.env.local
+.env.development
+
+# Ignore Docker files themselves
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Ignore log files
+**/*.log
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore Sparsh generated files
+Sparsh/login_attempts/
