@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import useAuthStore from './stores/authStore';
 import useSocketStore from './stores/socketStore';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import SsoConsume from './components/auth/SsoConsume';
 import ChatApp from './components/chat/ChatApp';
 import LoadingSpinner from './components/common/LoadingSpinner';
 import './App.css';
@@ -11,6 +12,8 @@ import './App.css';
 function App() {
   const { user, token, isLoading, checkAuth, isAuthenticated } = useAuthStore();
   const { disconnectSocket } = useSocketStore();
+  const location = useLocation();
+  const loginRedirectWithSearch = `/login${location.search || ''}`;
 
   useEffect(() => {
     try {
@@ -61,8 +64,18 @@ function App() {
           element={user ? <Navigate to="/" replace /> : <Register />} 
         />
         <Route 
+          path="/sso" 
+          element={<SsoConsume />} 
+        />
+        <Route 
           path="/" 
-          element={user ? <ChatApp /> : <Navigate to="/login" replace />} 
+          element={
+            user ? (
+              <ChatApp />
+            ) : (
+              <Navigate to={loginRedirectWithSearch} replace />
+            )
+          } 
         />
         <Route 
           path="*" 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import useAuthStore from '../../stores/authStore';
@@ -15,6 +15,26 @@ const Login = () => {
   
   const { login } = useAuthStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const state = params.get('state');
+
+    console.info('[whatsapp-sso] Login page mounted', {
+      path: window.location.pathname,
+      hasCode: Boolean(code),
+      hasState: Boolean(state)
+    });
+
+    if (code && state) {
+      const consumeUrl = `/api/auth/sso/consume?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}&returnTo=${encodeURIComponent('/sso')}`;
+      console.info('[whatsapp-sso] Redirecting login request to backend SSO consume', {
+        consumeUrl
+      });
+      window.location.replace(consumeUrl);
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({

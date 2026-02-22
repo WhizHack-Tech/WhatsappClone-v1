@@ -93,6 +93,15 @@ app.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
+app.get('/sso/consume', (req, res) => {
+  console.log('[whatsapp-sso] /sso/consume bridge hit', {
+    originalUrl: req.originalUrl
+  });
+  const queryIndex = req.originalUrl.indexOf('?');
+  const queryString = queryIndex >= 0 ? req.originalUrl.slice(queryIndex) : '';
+  return res.redirect(302, `/api/auth/sso/consume${queryString}`);
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/conversations', conversationRoutes);
