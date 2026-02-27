@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   whizrangeUserId: { type: String, unique: true, sparse: true, index: true },
   orgId: { type: String },
+  eventId: { type: String, index: true },
   roles: [{ type: String }],
   avatar: { type: String },
   userType: { type: String, default: 'user' },

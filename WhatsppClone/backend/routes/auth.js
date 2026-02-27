@@ -114,15 +114,17 @@ const extractWhizrangeUserPayload = (exchangePayload) => {
     const name = candidate.name || '';
     const username = candidate.username || candidate.userName || candidate.user_name || '';
     const orgId = candidate.orgId || candidate.org_id || '';
+    const eventId = candidate.event || candidate.event_id || candidate.eventId || '';
     const roles = candidate.roles;
 
-    if (whizrangeUserId || email || name || username || orgId || roles) {
+    if (whizrangeUserId || email || name || username || orgId || eventId || roles) {
       return {
         whizrangeUserId,
         email,
         name,
         username,
         orgId,
+        eventId,
         roles
       };
     }
@@ -176,29 +178,30 @@ router.post('/register', [
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: 'Validation failed',
-        errors: errors.array() 
+        errors: errors.array()
       });
     }
 
     // Get email from body and normalize it manually
-    let { name, email, password, userType = 'normal' } = req.body;
+    let { name, email, password, userType = 'normal', eventId } = req.body;
     email = email.toLowerCase().trim();
-    
+    eventId = typeof eventId === 'string' && eventId.trim() ? eventId.trim() : undefined;
+
     console.log('🔍 Registration attempt for email:', email);
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       console.log('❌ User already exists:', email);
-      return res.status(400).json({ 
-        message: 'User with this email already exists' 
+      return res.status(400).json({
+        message: 'User with this email already exists'
       });
     }
 
-    const user = await User.create({ name, email, password, userType });
+    const user = await User.create({ name, email, password, userType, eventId });
     const token = generateToken(user._id);
-    
+
     console.log('✅ User registered successfully:', user.name, user.email);
 
     res.status(201).json({
@@ -210,12 +213,13 @@ router.post('/register', [
         username: user.username,
         email: user.email,
         avatar: user.avatar,
-        userType: user.userType
+        userType: user.userType,
+        eventId: user.eventId
       }
     });
   } catch (error) {
     console.error('❌ Registration error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Server error during registration',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
@@ -229,20 +233,20 @@ router.post('/login', [
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: 'Validation failed',
-        errors: errors.array() 
+        errors: errors.array()
       });
     }
 
     // Get email from body and normalize it manually (normalizeEmail can cause issues with .local domains)
     let { email, password } = req.body;
     email = email.toLowerCase().trim();
-    
+
     console.log('🔍 Login attempt for email:', email);
-    
+
     const user = await User.findOne({ email });
-    
+
     if (!user) {
       console.log('❌ User not found for email:', email);
       return res.status(401).json({ message: 'Invalid credentials' });
@@ -251,11 +255,11 @@ router.post('/login', [
     console.log('✅ User found:', user.name, user.email);
     console.log('🔍 Stored password hash:', user.password.substring(0, 20) + '...');
     console.log('🔍 Attempting password comparison...');
-    
+
     const isPasswordValid = await user.matchPassword(password);
-    
+
     console.log('🔍 Password comparison result:', isPasswordValid);
-    
+
     if (!isPasswordValid) {
       console.log('❌ Invalid password for user:', email);
       console.log('❌ Password provided:', password);
@@ -264,7 +268,7 @@ router.post('/login', [
 
     const token = generateToken(user._id);
     console.log('✅ Login successful for user:', user.name);
-    
+
     res.json({
       message: 'Login successful',
       token,
@@ -274,12 +278,13 @@ router.post('/login', [
         username: user.username,
         email: user.email,
         avatar: user.avatar,
-        userType: user.userType
+        userType: user.userType,
+        eventId: user.eventId
       }
     });
   } catch (error) {
     console.error('❌ Login error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: 'Server error during login',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
@@ -332,6 +337,9 @@ router.get('/sso/consume', async (req, res) => {
     const orgId = typeof rawUserPayload.orgId === 'string' && rawUserPayload.orgId.trim()
       ? rawUserPayload.orgId.trim()
       : undefined;
+    const eventId = typeof rawUserPayload.eventId === 'string' && rawUserPayload.eventId.trim()
+      ? rawUserPayload.eventId.trim()
+      : undefined;
     const roles = Array.isArray(rawUserPayload.roles)
       ? rawUserPayload.roles
         .filter((role) => typeof role === 'string')
@@ -347,6 +355,7 @@ router.get('/sso/consume', async (req, res) => {
       derivedLocalEmail,
       hasName: Boolean(name),
       hasOrgId: Boolean(orgId),
+      hasEventId: Boolean(eventId),
       rolesCount: Array.isArray(roles) ? roles.length : 0
     });
 
@@ -386,6 +395,7 @@ router.get('/sso/consume', async (req, res) => {
         password: generateRandomStrongPassword(),
         whizrangeUserId: whizrangeUserId || undefined,
         orgId,
+        eventId,
         roles
       });
       console.log('[whatsapp-sso] Created new user from SSO payload', {
@@ -412,6 +422,11 @@ router.get('/sso/consume', async (req, res) => {
 
       if (orgId && user.orgId !== orgId) {
         user.orgId = orgId;
+        shouldSave = true;
+      }
+
+      if (eventId && user.eventId !== eventId) {
+        user.eventId = eventId;
         shouldSave = true;
       }
 
@@ -470,11 +485,11 @@ router.get('/me', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId).select('-password');
     if (!user) {
-      return res.status(404).json({ 
-        message: 'User not found' 
+      return res.status(404).json({
+        message: 'User not found'
       });
     }
-    res.json({ 
+    res.json({
       user: {
         id: user._id,
         name: user.name,
@@ -484,14 +499,15 @@ router.get('/me', auth, async (req, res) => {
         userType: user.userType,
         isOnline: user.isOnline,
         trainingLevel: user.trainingLevel,
+        eventId: user.eventId,
         lastSeen: user.lastSeen,
         createdAt: user.createdAt
       }
     });
   } catch (error) {
     console.error('Get user error:', error);
-    res.status(500).json({ 
-      message: 'Server error' 
+    res.status(500).json({
+      message: 'Server error'
     });
   }
 });

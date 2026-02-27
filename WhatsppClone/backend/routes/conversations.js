@@ -2,8 +2,11 @@ const express = require('express');
 const auth = require('../middleware/auth');
 const Conversation = require('../models/Conversation');
 const User = require('../models/User');
+const Message = require('../models/Message');
 
 const router = express.Router();
+
+const PRIVILEGED_EXPORT_ROLES = new Set(['admin', 'superadmin', 'org_admin', 'event_admin']);
 
 router.get('/', auth, async (req, res) => {
   try {
@@ -33,6 +36,169 @@ router.get('/', auth, async (req, res) => {
   } catch (error) {
     console.error('Get conversations error:', error);
     res.status(500).json({ message: 'Error fetching conversations' });
+  }
+});
+
+router.get('/event/:eventId/chats', auth, async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    if (!eventId || !eventId.trim()) {
+      return res.status(400).json({ message: 'Event ID is required' });
+    }
+
+    const requestingUser = await User.findById(req.user.userId).select('eventId roles');
+    if (!requestingUser) {
+      return res.status(404).json({ message: 'Requesting user not found' });
+    }
+
+    const userRoles = Array.isArray(requestingUser.roles)
+      ? requestingUser.roles.map((role) => String(role).toLowerCase())
+      : [];
+    const isPrivileged = userRoles.some((role) => PRIVILEGED_EXPORT_ROLES.has(role));
+
+    if (!isPrivileged && requestingUser.eventId !== eventId.trim()) {
+      return res.status(403).json({ message: 'Access denied for this event' });
+    }
+
+    const eventUsers = await User.find({ eventId: eventId.trim() })
+      .select('_id name username email avatar userType whizrangeUserId eventId')
+      .lean();
+
+    const eventUserIds = eventUsers.map((user) => user._id);
+    const eventUserIdSet = new Set(eventUserIds.map((id) => String(id)));
+
+    if (eventUserIds.length === 0) {
+      return res.json({
+        eventId: eventId.trim(),
+        totals: {
+          eventUsers: 0,
+          conversations: 0,
+          messages: 0
+        },
+        users: [],
+        conversations: [],
+        userConversations: []
+      });
+    }
+
+    const conversations = await Conversation.find({
+      participants: { $in: eventUserIds }
+    })
+      .populate('participants', 'name username email avatar userType whizrangeUserId eventId')
+      .sort({ lastMessageTime: -1 });
+
+    const conversationIds = conversations.map((conversation) => conversation._id);
+
+    const messages = conversationIds.length > 0
+      ? await Message.find({ conversationId: { $in: conversationIds } })
+        .populate('senderId', 'name username email avatar userType whizrangeUserId eventId')
+        .sort({ createdAt: 1 })
+      : [];
+
+    const messagesByConversation = messages.reduce((acc, message) => {
+      const conversationKey = String(message.conversationId);
+      if (!acc[conversationKey]) {
+        acc[conversationKey] = [];
+      }
+      acc[conversationKey].push({
+        messageId: message._id,
+        sender: message.senderId ? {
+          userId: message.senderId._id,
+          name: message.senderId.name,
+          username: message.senderId.username,
+          email: message.senderId.email,
+          userType: message.senderId.userType,
+          whizrangeUserId: message.senderId.whizrangeUserId,
+          eventId: message.senderId.eventId
+        } : null,
+        text: message.content,
+        messageType: message.messageType,
+        status: message.status,
+        isAI: message.isAI,
+        createdAt: message.createdAt
+      });
+      return acc;
+    }, {});
+
+    const conversationPayload = conversations.map((conversation) => {
+      const participants = (conversation.participants || []).map((participant) => ({
+        userId: participant._id,
+        name: participant.name,
+        username: participant.username,
+        email: participant.email,
+        avatar: participant.avatar,
+        userType: participant.userType,
+        whizrangeUserId: participant.whizrangeUserId,
+        eventId: participant.eventId,
+        isEventUser: eventUserIdSet.has(String(participant._id))
+      }));
+
+      const eventParticipants = participants.filter((participant) => participant.isEventUser);
+      const conversationMessages = messagesByConversation[String(conversation._id)] || [];
+
+      return {
+        conversationId: conversation._id,
+        participants,
+        eventParticipants,
+        hasExternalParticipants: participants.some((participant) => !participant.isEventUser),
+        lastMessage: conversation.lastMessage,
+        lastMessageTime: conversation.lastMessageTime,
+        messageCount: conversationMessages.length,
+        messages: conversationMessages
+      };
+    });
+
+    const userConversationsMap = new Map(
+      eventUsers.map((user) => [
+        String(user._id),
+        {
+          userId: user._id,
+          name: user.name,
+          username: user.username,
+          email: user.email,
+          avatar: user.avatar,
+          userType: user.userType,
+          whizrangeUserId: user.whizrangeUserId,
+          eventId: user.eventId,
+          conversations: []
+        }
+      ])
+    );
+
+    conversationPayload.forEach((conversation) => {
+      conversation.eventParticipants.forEach((participant) => {
+        const userEntry = userConversationsMap.get(String(participant.userId));
+        if (!userEntry) {
+          return;
+        }
+
+        userEntry.conversations.push({
+          conversationId: conversation.conversationId,
+          withUsers: conversation.participants.filter(
+            (otherParticipant) => String(otherParticipant.userId) !== String(participant.userId)
+          ),
+          messageCount: conversation.messageCount,
+          lastMessage: conversation.lastMessage,
+          lastMessageTime: conversation.lastMessageTime,
+          messages: conversation.messages
+        });
+      });
+    });
+
+    res.json({
+      eventId: eventId.trim(),
+      totals: {
+        eventUsers: eventUsers.length,
+        conversations: conversationPayload.length,
+        messages: messages.length
+      },
+      users: eventUsers,
+      conversations: conversationPayload,
+      userConversations: Array.from(userConversationsMap.values())
+    });
+  } catch (error) {
+    console.error('Export event chats error:', error);
+    res.status(500).json({ message: 'Error exporting event chats' });
   }
 });
 
@@ -89,7 +255,6 @@ router.delete('/all', auth, async (req, res) => {
     });
 
     // Also delete all messages from these conversations
-    const Message = require('../models/Message');
     const conversationsToDelete = await Conversation.find({
       participants: req.user.userId
     });
