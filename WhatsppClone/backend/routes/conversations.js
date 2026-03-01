@@ -1,4 +1,5 @@
 const express = require('express');
+const { timingSafeEqual } = require('crypto');
 const auth = require('../middleware/auth');
 const Conversation = require('../models/Conversation');
 const User = require('../models/User');
@@ -7,6 +8,39 @@ const Message = require('../models/Message');
 const router = express.Router();
 
 const PRIVILEGED_EXPORT_ROLES = new Set(['admin', 'superadmin', 'org_admin', 'event_admin']);
+
+const safeSecretMatch = (expected, received) => {
+  const expectedBuffer = Buffer.from(expected || '', 'utf8');
+  const receivedBuffer = Buffer.from(received || '', 'utf8');
+
+  if (expectedBuffer.length !== receivedBuffer.length) {
+    return false;
+  }
+
+  return timingSafeEqual(expectedBuffer, receivedBuffer);
+};
+
+const authOrWhizrangeApp = (req, res, next) => {
+  const appKey = (req.header('x-app-key') || '').trim();
+  const appSecret = (req.header('x-app-secret') || '').trim();
+  const expectedKey = (process.env.WHIZRANGE_APP_KEY || '').trim();
+  const expectedSecret = (process.env.WHIZRANGE_APP_SECRET || '').trim();
+
+  if (appKey || appSecret) {
+    if (!expectedKey || !expectedSecret) {
+      return res.status(500).json({ message: 'Whizrange app credentials are not configured' });
+    }
+
+    if (appKey === expectedKey && safeSecretMatch(expectedSecret, appSecret)) {
+      req.isWhizrangeApp = true;
+      return next();
+    }
+
+    return res.status(401).json({ message: 'Invalid app credentials' });
+  }
+
+  return auth(req, res, next);
+};
 
 router.get('/', auth, async (req, res) => {
   try {
@@ -39,37 +73,84 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-router.get('/event/:eventId/chats', auth, async (req, res) => {
+router.get('/event/:eventId/chats', authOrWhizrangeApp, async (req, res) => {
+  const requestStart = Date.now();
+  const normalizedEventId = String(req.params.eventId || '').trim();
+  const requestContext = {
+    eventId: normalizedEventId || null,
+    isWhizrangeApp: Boolean(req.isWhizrangeApp),
+    requesterUserId: req.user?.userId || null,
+    appKey: req.isWhizrangeApp ? (req.header('x-app-key') || '').trim() || null : null
+  };
+
+  console.log('[event-chats] Request received', requestContext);
+
   try {
-    const { eventId } = req.params;
-    if (!eventId || !eventId.trim()) {
+    if (!normalizedEventId) {
+      console.warn('[event-chats] Missing eventId', requestContext);
       return res.status(400).json({ message: 'Event ID is required' });
     }
 
-    const requestingUser = await User.findById(req.user.userId).select('eventId roles');
-    if (!requestingUser) {
-      return res.status(404).json({ message: 'Requesting user not found' });
+    if (!req.isWhizrangeApp) {
+      const authStart = Date.now();
+      const requestingUser = await User.findById(req.user.userId).select('eventId roles');
+      const authDurationMs = Date.now() - authStart;
+
+      if (!requestingUser) {
+        console.warn('[event-chats] Requesting user not found', {
+          ...requestContext,
+          authDurationMs
+        });
+        return res.status(404).json({ message: 'Requesting user not found' });
+      }
+
+      const userRoles = Array.isArray(requestingUser.roles)
+        ? requestingUser.roles.map((role) => String(role).toLowerCase())
+        : [];
+      const isPrivileged = userRoles.some((role) => PRIVILEGED_EXPORT_ROLES.has(role));
+
+      console.log('[event-chats] User auth resolved', {
+        ...requestContext,
+        authDurationMs,
+        requesterEventId: requestingUser.eventId || null,
+        roles: userRoles,
+        isPrivileged
+      });
+
+      if (!isPrivileged && requestingUser.eventId !== normalizedEventId) {
+        console.warn('[event-chats] Access denied for event', {
+          ...requestContext,
+          requesterEventId: requestingUser.eventId || null
+        });
+        return res.status(403).json({ message: 'Access denied for this event' });
+      }
+    } else {
+      console.log('[event-chats] App authentication accepted', requestContext);
     }
 
-    const userRoles = Array.isArray(requestingUser.roles)
-      ? requestingUser.roles.map((role) => String(role).toLowerCase())
-      : [];
-    const isPrivileged = userRoles.some((role) => PRIVILEGED_EXPORT_ROLES.has(role));
-
-    if (!isPrivileged && requestingUser.eventId !== eventId.trim()) {
-      return res.status(403).json({ message: 'Access denied for this event' });
-    }
-
-    const eventUsers = await User.find({ eventId: eventId.trim() })
+    const eventUsersStart = Date.now();
+    const eventUsers = await User.find({ eventId: normalizedEventId })
       .select('_id name username email avatar userType whizrangeUserId eventId')
       .lean();
+    const eventUsersDurationMs = Date.now() - eventUsersStart;
+
+    console.log('[event-chats] Event users loaded', {
+      ...requestContext,
+      count: eventUsers.length,
+      queryDurationMs: eventUsersDurationMs
+    });
 
     const eventUserIds = eventUsers.map((user) => user._id);
     const eventUserIdSet = new Set(eventUserIds.map((id) => String(id)));
 
     if (eventUserIds.length === 0) {
+      console.log('[event-chats] No event users found', {
+        ...requestContext,
+        durationMs: Date.now() - requestStart
+      });
+
       return res.json({
-        eventId: eventId.trim(),
+        eventId: normalizedEventId,
         totals: {
           eventUsers: 0,
           conversations: 0,
@@ -81,20 +162,37 @@ router.get('/event/:eventId/chats', auth, async (req, res) => {
       });
     }
 
+    const conversationsStart = Date.now();
     const conversations = await Conversation.find({
       participants: { $in: eventUserIds }
     })
       .populate('participants', 'name username email avatar userType whizrangeUserId eventId')
       .sort({ lastMessageTime: -1 });
+    const conversationsDurationMs = Date.now() - conversationsStart;
+
+    console.log('[event-chats] Conversations loaded', {
+      ...requestContext,
+      count: conversations.length,
+      queryDurationMs: conversationsDurationMs
+    });
 
     const conversationIds = conversations.map((conversation) => conversation._id);
 
+    const messagesStart = Date.now();
     const messages = conversationIds.length > 0
       ? await Message.find({ conversationId: { $in: conversationIds } })
         .populate('senderId', 'name username email avatar userType whizrangeUserId eventId')
         .sort({ createdAt: 1 })
       : [];
+    const messagesDurationMs = Date.now() - messagesStart;
 
+    console.log('[event-chats] Messages loaded', {
+      ...requestContext,
+      count: messages.length,
+      queryDurationMs: messagesDurationMs
+    });
+
+    const transformStart = Date.now();
     const messagesByConversation = messages.reduce((acc, message) => {
       const conversationKey = String(message.conversationId);
       if (!acc[conversationKey]) {
@@ -185,19 +283,41 @@ router.get('/event/:eventId/chats', auth, async (req, res) => {
       });
     });
 
+    const totals = {
+      eventUsers: eventUsers.length,
+      conversations: conversationPayload.length,
+      messages: messages.length
+    };
+
+    const transformDurationMs = Date.now() - transformStart;
+
+    console.log('[event-chats] Request completed', {
+      ...requestContext,
+      totals,
+      durationsMs: {
+        eventUsers: eventUsersDurationMs,
+        conversations: conversationsDurationMs,
+        messages: messagesDurationMs,
+        transform: transformDurationMs,
+        total: Date.now() - requestStart
+      }
+    });
+
     res.json({
-      eventId: eventId.trim(),
-      totals: {
-        eventUsers: eventUsers.length,
-        conversations: conversationPayload.length,
-        messages: messages.length
-      },
+      eventId: normalizedEventId,
+      totals,
       users: eventUsers,
       conversations: conversationPayload,
       userConversations: Array.from(userConversationsMap.values())
     });
   } catch (error) {
-    console.error('Export event chats error:', error);
+    console.error('[event-chats] Export failed', {
+      ...requestContext,
+      durationMs: Date.now() - requestStart,
+      message: error?.message || String(error),
+      stack: error?.stack || null
+    });
+
     res.status(500).json({ message: 'Error exporting event chats' });
   }
 });
